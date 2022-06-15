@@ -1,0 +1,25 @@
+{
+  "name": "speaker-app",
+  "version": "1.0.0",
+  "description": "React application for Designing React Components course",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "author": "jmjf",
+  "license": "MIT",
+  "dependencies": {
+    "next": "^12.1.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.43",
+    "@types/react": "^18.0.12",
+    "@types/react-dom": "^18.0.5",
+    "typescript": "^4.7.3"
+  }
+}
