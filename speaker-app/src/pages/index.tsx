@@ -1,38 +1,38 @@
 import { data } from '../SpeakerData';
 
+import { Session } from 'components/Session';
+import { Sessions } from 'components/Sessions';
+
 const IndexPage = () => {
 	return (
 		<div className="container speakers-list">
 			<div className="row">
 				{data.map((speaker) => {
-					const { id, bio, first, last, favorite, twitterHandle, company, sessions } = speaker;
+					const { speakerId, bioText, firstName, lastName, favoriteFlag, twitterHandle, companyName, sessions } =
+						speaker;
 					return (
-						<div key={id} className="col-xs-12 col-sm-12 col-md-6 col-lg-4 col-sm-12 col-xs-12">
+						<div key={speakerId} className="col-xs-12 col-sm-12 col-md-6 col-lg-4 col-sm-12 col-xs-12">
 							<div className="card card-height p-4 mt-4">
 								<div className="speaker-img d-flex flex-row justify-content-center align-items-center h300">
 									<img
 										className="contain-fit"
-										src={`/images/speaker-${id}.jpg`}
+										src={`/images/speaker-${speakerId}.jpg`}
 										width="300"
-										alt={`image of ${first} ${last}`}
+										alt={`image of ${firstName} ${lastName}`}
 									/>
 								</div>
 								<div className="speaker-info">
 									<div className="d-flex justify-content-between mb-3">
 										<h3 className="text-truncate w200">
-											{first} {last}
+											{firstName} {lastName}
 										</h3>
 									</div>
 									<p>
-										{bio} {company} {twitterHandle} {favorite}
+										{bioText} {companyName} {twitterHandle} {favoriteFlag}
 									</p>
 								</div>
 							</div>
-							<div className="sessionBox card h-250">
-								<span className="session w-100">
-									{sessions[0].title} <strong>Room: {sessions[0].room.name}</strong>
-								</span>
-							</div>
+							<Sessions sessions={sessions} />
 						</div>
 					);
 				})}
