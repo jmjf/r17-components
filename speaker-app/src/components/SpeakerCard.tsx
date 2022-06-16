@@ -5,15 +5,16 @@ import { Sessions } from 'components/Sessions';
 interface ISpeakerCardProps {
 	speaker: ISpeaker;
 	showSessionsFlag: boolean;
+	onFavoriteToggle: () => void;
 }
 
-export const SpeakerCard = ({ speaker, showSessionsFlag }: ISpeakerCardProps) => {
+export const SpeakerCard = ({ speaker, showSessionsFlag, onFavoriteToggle }: ISpeakerCardProps) => {
 	const { speakerId, firstName, lastName, sessions } = speaker;
 	return (
 		<div key={speakerId} className="col-xs-12 col-sm-12 col-md-6 col-lg-4 col-sm-12 col-xs-12">
 			<div className="card card-height p-4 mt-4">
 				<SpeakerImage speakerId={speakerId} firstName={firstName} lastName={lastName} />
-				<SpeakerInfo {...speaker} />
+				<SpeakerInfo {...speaker} onFavoriteToggle={onFavoriteToggle} />
 			</div>
 			{showSessionsFlag === true ? <Sessions sessions={sessions} /> : null}
 		</div>
@@ -46,9 +47,18 @@ interface ISpeakerInfoProps {
 	companyName: string;
 	twitterHandle: string;
 	favoriteFlag: boolean;
+	onFavoriteToggle: () => void;
 }
 
-const SpeakerInfo = ({ firstName, lastName, bioText, companyName, twitterHandle, favoriteFlag }: ISpeakerInfoProps) => {
+const SpeakerInfo = ({
+	firstName,
+	lastName,
+	bioText,
+	companyName,
+	twitterHandle,
+	favoriteFlag,
+	onFavoriteToggle,
+}: ISpeakerInfoProps) => {
 	return (
 		<div className="speaker-info">
 			<div className="d-flex justify-content-between mb-3">
@@ -56,6 +66,7 @@ const SpeakerInfo = ({ firstName, lastName, bioText, companyName, twitterHandle,
 					{firstName} {lastName}
 				</h3>
 			</div>
+			<FavoriteToggle favoriteFlag={favoriteFlag} onFavoriteToggle={onFavoriteToggle} />
 			<div>
 				<p className="card-description">{bioText}</p>
 				<div className="social d-flex flex-row mt-4">
@@ -69,6 +80,20 @@ const SpeakerInfo = ({ firstName, lastName, bioText, companyName, twitterHandle,
 					</div>
 				</div>
 			</div>
+		</div>
+	);
+};
+
+interface IFavoriteToggleProps {
+	favoriteFlag: boolean;
+	onFavoriteToggle: () => void;
+}
+const FavoriteToggle = ({ favoriteFlag, onFavoriteToggle }: IFavoriteToggleProps) => {
+	return (
+		<div className="action padB1">
+			<span onClick={onFavoriteToggle}>
+				<i className={favoriteFlag === true ? 'fa fa-star orange' : 'fa fa-star-o orange'} /> Favorite{' '}
+			</span>
 		</div>
 	);
 };

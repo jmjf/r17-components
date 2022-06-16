@@ -6,12 +6,11 @@ import { SpeakersToolbar } from './SpeakersToolbar';
 import { ISpeaker } from 'SpeakerData';
 
 interface ISpeakerProps {
-	data: ISpeaker[];
 	themeName: string;
 	setThemeName: (value: string) => void;
 }
 
-export const Speakers = ({ data, themeName, setThemeName }: ISpeakerProps) => {
+export const Speakers = ({ themeName, setThemeName }: ISpeakerProps) => {
 	const [showSessionsFlag, setShowSessionsFlag] = useState(true);
 
 	return (
@@ -22,7 +21,7 @@ export const Speakers = ({ data, themeName, setThemeName }: ISpeakerProps) => {
 				showSessionsFlag={showSessionsFlag}
 				setShowSessionsFlag={setShowSessionsFlag}
 			/>
-			<SpeakersList data={data} showSessionsFlag={showSessionsFlag} />
+			<SpeakersList showSessionsFlag={showSessionsFlag} />
 		</>
 	);
 };
