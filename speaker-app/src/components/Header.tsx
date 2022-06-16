@@ -1,4 +1,8 @@
-export const Header = () => {
+interface IHeaderProps {
+	themeName: string;
+}
+
+export const Header = ({ themeName }: IHeaderProps) => {
 	return (
 		<div className="padT4 padB4">
 			<div className="container mobile-container">
@@ -6,10 +10,10 @@ export const Header = () => {
 					<div>
 						<img alt="SVCC home page" src="/images/SVCClogo.png" />
 					</div>
-					<div className="light">
+					<div className={themeName}>
 						<h4 className="header-title">Silicon Valley Code Camp</h4>
 					</div>
-					<div className="text-dark">
+					<div className={themeName === 'light' ? '' : 'text-info'}>
 						Hello Mr. Smith &nbsp;&nbsp;
 						<span>
 							<a href="#">sign-out</a>

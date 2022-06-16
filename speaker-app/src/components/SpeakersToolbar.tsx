@@ -1,9 +1,18 @@
 import { useState } from 'react';
 
-export const SpeakersToolbar = () => {
-	const [themeName, setThemeName] = useState('light');
-	const [showSessionsFlag, setShowSessionsFlag] = useState(true);
+interface ISpeakersToolbarProps {
+	themeName: string;
+	setThemeName: (value: string) => void;
+	showSessionsFlag: boolean;
+	setShowSessionsFlag: (value: boolean) => void;
+}
 
+export const SpeakersToolbar = ({
+	themeName,
+	setThemeName,
+	showSessionsFlag,
+	setShowSessionsFlag,
+}: ISpeakersToolbarProps) => {
 	return (
 		<section className="toolbar dark-theme-header">
 			<div className="container">
