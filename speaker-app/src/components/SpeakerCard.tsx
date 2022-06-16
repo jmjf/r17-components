@@ -4,9 +4,10 @@ import { Sessions } from 'components/Sessions';
 
 interface ISpeakerCardProps {
 	speaker: ISpeaker;
+	showSessionsFlag: boolean;
 }
 
-export const SpeakerCard = ({ speaker }: ISpeakerCardProps) => {
+export const SpeakerCard = ({ speaker, showSessionsFlag }: ISpeakerCardProps) => {
 	const { speakerId, firstName, lastName, sessions } = speaker;
 	return (
 		<div key={speakerId} className="col-xs-12 col-sm-12 col-md-6 col-lg-4 col-sm-12 col-xs-12">
@@ -14,7 +15,7 @@ export const SpeakerCard = ({ speaker }: ISpeakerCardProps) => {
 				<SpeakerImage speakerId={speakerId} firstName={firstName} lastName={lastName} />
 				<SpeakerInfo {...speaker} />
 			</div>
-			<Sessions sessions={sessions} />
+			{showSessionsFlag === true ? <Sessions sessions={sessions} /> : null}
 		</div>
 	);
 };

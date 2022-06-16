@@ -1,25 +1,28 @@
 import { useState } from 'react';
 
-import { data } from 'SpeakerData';
-
-import { Header } from 'components/Header';
-import { SpeakersToolbar } from 'components/SpeakersToolbar';
 import { SpeakersList } from './SpeakersList';
+import { SpeakersToolbar } from './SpeakersToolbar';
 
-export const Speakers = () => {
-	const [themeName, setThemeName] = useState('light');
+import { ISpeaker } from 'SpeakerData';
+
+interface ISpeakerProps {
+	data: ISpeaker[];
+	themeName: string;
+	setThemeName: (value: string) => void;
+}
+
+export const Speakers = ({ data, themeName, setThemeName }: ISpeakerProps) => {
 	const [showSessionsFlag, setShowSessionsFlag] = useState(true);
 
 	return (
-		<div className={`container-fluid ${themeName}`}>
-			<Header themeName={themeName} />
+		<>
 			<SpeakersToolbar
 				themeName={themeName}
 				setThemeName={setThemeName}
 				showSessionsFlag={showSessionsFlag}
 				setShowSessionsFlag={setShowSessionsFlag}
 			/>
-			<SpeakersList data={data} />
-		</div>
+			<SpeakersList data={data} showSessionsFlag={showSessionsFlag} />
+		</>
 	);
 };

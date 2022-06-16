@@ -7,7 +7,7 @@ interface ISessionsProps {
 
 export const Sessions = ({ sessions }: ISessionsProps) => {
 	return (
-		<div className="sesionBox card h-250">
+		<div className="sessionBox card h-250">
 			<Session sessionName={sessions[0].sessionName} roomName={sessions[0].room.roomName} />
 		</div>
 	);

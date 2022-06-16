@@ -1,9 +1,9 @@
-import { Speakers } from 'components/Speakers';
+import { SpeakersApp } from 'components/SpeakersApp';
 
 const IndexPage = () => {
 	return (
 		<div>
-			<Speakers />
+			<SpeakersApp />
 		</div>
 	);
 };
