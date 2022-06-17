@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
-
 import ContentLoader from 'react-content-loader';
 
 import { SpeakerCard } from './SpeakerCard';
-import { useRequestSpeakers } from 'hooks/useRequestSpeakers';
+import { useRequestDelay } from '../hooks/useRequestDelay';
+
+import { ISpeaker, getSpeakerData } from '../SpeakerData';
 
 interface ISpeakersListProps {
 	showSessionsFlag: boolean;
@@ -20,9 +20,15 @@ const SpeakerLoader = () => {
 };
 
 export const SpeakersList = ({ showSessionsFlag }: ISpeakersListProps) => {
-	const { speakers, componentStatus, loadErrorMessage, onFavoriteToggle } = useRequestSpeakers(2000);
+	// data: speakers -> renames data to speakers
+	const {
+		data: speakers,
+		requestStatus,
+		loadErrorMessage,
+		saveData,
+	} = useRequestDelay<ISpeaker>(getSpeakerData, 2000);
 
-	switch (componentStatus) {
+	switch (requestStatus) {
 		case 'LOADERROR':
 			return (
 				<div className="text-danger">
@@ -34,11 +40,7 @@ export const SpeakersList = ({ showSessionsFlag }: ISpeakersListProps) => {
 			);
 			break;
 		case 'LOADING':
-			return (
-				<div className="container speakers-list">
-					<SpeakerLoader />
-				</div>
-			);
+			return <div className="container speakers-list">Loading...</div>;
 			break;
 		case 'READY':
 			return (
@@ -47,9 +49,11 @@ export const SpeakersList = ({ showSessionsFlag }: ISpeakersListProps) => {
 						{speakers.map((speaker) => {
 							return (
 								<SpeakerCard
-									key={speaker.speakerId}
+									key={speaker.id}
 									speaker={speaker}
-									onFavoriteToggle={() => onFavoriteToggle(speaker.speakerId)}
+									onFavoriteToggle={() => {
+										saveData({ ...speaker, favoriteFlag: !speaker.favoriteFlag } as ISpeaker);
+									}}
 									showSessionsFlag={showSessionsFlag}
 								/>
 							);
@@ -59,6 +63,7 @@ export const SpeakersList = ({ showSessionsFlag }: ISpeakersListProps) => {
 			);
 			break;
 		default:
-			return <div>ERROR: Unknown component status {componentStatus}</div>;
+			return <div>ERROR: Unknown component status {requestStatus}</div>;
+			break;
 	}
 };

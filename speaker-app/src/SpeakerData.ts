@@ -1,3 +1,5 @@
+import { IRequestData } from 'hooks/useRequestDelay';
+
 export interface IRoom {
 	roomName: string;
 	maxPeopleCount: number;
@@ -10,8 +12,8 @@ export interface ISession {
 	room: IRoom;
 }
 
-export interface ISpeaker {
-	speakerId: string;
+export interface ISpeaker extends IRequestData {
+	id: string;
 	firstName: string;
 	lastName: string;
 	companyName: string;
@@ -21,9 +23,13 @@ export interface ISpeaker {
 	sessions: ISession[];
 }
 
-export const data: ISpeaker[] = [
+export const getSpeakerData = (): ISpeaker[] => {
+	return data;
+};
+
+const data: ISpeaker[] = [
 	{
-		speakerId: '1269',
+		id: '1269',
 		firstName: 'Arun',
 		lastName: 'Gupta',
 		companyName: 'Amazon',
@@ -277,7 +283,7 @@ export const data: ISpeaker[] = [
 		],
 	},
 	{
-		speakerId: '8590',
+		id: '8590',
 		firstName: 'Chris',
 		lastName: 'Richardson',
 		companyName: 'Eventuate, Inc',
@@ -396,7 +402,7 @@ export const data: ISpeaker[] = [
 		],
 	},
 	{
-		speakerId: '5443',
+		id: '5443',
 		firstName: 'Mark',
 		lastName: 'Abramson',
 		companyName: 'Printform Corporation',
@@ -497,7 +503,7 @@ export const data: ISpeaker[] = [
 		],
 	},
 	{
-		speakerId: '1124',
+		id: '1124',
 		firstName: 'Douglas',
 		lastName: 'Crockford',
 		companyName: 'PayPal',
@@ -761,7 +767,7 @@ export const data: ISpeaker[] = [
 		],
 	},
 	{
-		speakerId: '10801',
+		id: '10801',
 		firstName: 'Troy',
 		lastName: 'Miles',
 		companyName: 'Kelley Blue Book',
@@ -826,7 +832,7 @@ export const data: ISpeaker[] = [
 		],
 	},
 	{
-		speakerId: '47343',
+		id: '47343',
 		firstName: 'Eve',
 		lastName: 'Porcello',
 		companyName: 'Moon Highway',
@@ -846,7 +852,7 @@ export const data: ISpeaker[] = [
 		],
 	},
 	{
-		speakerId: '14918',
+		id: '14918',
 		firstName: 'Claudia',
 		lastName: 'Galvan',
 		companyName: 'Early Stage Innovation',
@@ -893,7 +899,7 @@ export const data: ISpeaker[] = [
 		],
 	},
 	{
-		speakerId: '46769',
+		id: '46769',
 		firstName: 'Mary',
 		lastName: 'Grygleski',
 		companyName: 'IBM',
@@ -913,7 +919,7 @@ export const data: ISpeaker[] = [
 		],
 	},
 	{
-		speakerId: '8367',
+		id: '8367',
 		firstName: 'Gayle Laakmann',
 		lastName: 'McDowell',
 		companyName: 'CareerCup',
@@ -1041,7 +1047,7 @@ export const data: ISpeaker[] = [
 		],
 	},
 	{
-		speakerId: '620',
+		id: '620',
 		firstName: 'Ron',
 		lastName: 'Kleinman',
 		companyName: 'De Anza College',
