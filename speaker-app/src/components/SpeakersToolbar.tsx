@@ -1,18 +1,14 @@
-import { useState } from 'react';
+import { useContext } from 'react';
+import { ThemeContext } from './SpeakersApp';
 
 interface ISpeakersToolbarProps {
-	themeName: string;
-	setThemeName: (value: string) => void;
 	showSessionsFlag: boolean;
 	setShowSessionsFlag: (value: boolean) => void;
 }
 
-export const SpeakersToolbar = ({
-	themeName,
-	setThemeName,
-	showSessionsFlag,
-	setShowSessionsFlag,
-}: ISpeakersToolbarProps) => {
+export const SpeakersToolbar = ({ showSessionsFlag, setShowSessionsFlag }: ISpeakersToolbarProps) => {
+	const { themeName, setThemeName } = useContext(ThemeContext);
+
 	return (
 		<section className="toolbar dark-theme-header">
 			<div className="container">

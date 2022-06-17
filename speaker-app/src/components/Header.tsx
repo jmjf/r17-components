@@ -1,8 +1,9 @@
-interface IHeaderProps {
-	themeName: string;
-}
+import { useContext } from 'react';
+import { ThemeContext } from './SpeakersApp';
 
-export const Header = ({ themeName }: IHeaderProps) => {
+export const Header = () => {
+	const { themeName } = useContext(ThemeContext);
+
 	return (
 		<div className="padT4 padB4">
 			<div className="container mobile-container">
