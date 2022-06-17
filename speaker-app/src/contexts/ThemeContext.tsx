@@ -1,10 +1,11 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, Dispatch, SetStateAction } from 'react';
+import { useTheme } from '../hooks/useTheme';
 
 export type ThemeType = 'light' | 'dark';
 
 interface IThemeContext {
 	themeName: ThemeType;
-	setThemeName: (value: ThemeType) => void;
+	setThemeName: (newThemeName: ThemeType) => void;
 }
 
 interface IThemeContextProps {
@@ -15,7 +16,7 @@ interface IThemeContextProps {
 export const ThemeContext = createContext<IThemeContext>({} as IThemeContext);
 
 export const ThemeContextProvider = ({ startingTheme, children }: IThemeContextProps) => {
-	const [themeName, setThemeName] = useState(startingTheme);
+	const { themeName, setThemeName } = useTheme(startingTheme);
 
 	return <ThemeContext.Provider value={{ setThemeName, themeName }}>{children}</ThemeContext.Provider>;
 };
