@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { ThemeContext } from './SpeakersApp';
+import { ThemeContext, ThemeType } from './Layout';
 
 interface ISpeakersToolbarProps {
 	showSessionsFlag: boolean;
@@ -31,7 +31,7 @@ export const SpeakersToolbar = ({ showSessionsFlag, setShowSessionsFlag }: ISpea
 								<select
 									className="form-control theme"
 									value={themeName}
-									onChange={(ev) => setThemeName(ev.target.value)}
+									onChange={(ev) => setThemeName(ev.target.value as ThemeType)}
 								>
 									<option value="light">Light</option>
 									<option value="dark">Dark</option>

@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { ThemeContext } from './SpeakersApp';
+import { ThemeContext } from './Layout';
 
 export const Header = () => {
 	const { themeName } = useContext(ThemeContext);
