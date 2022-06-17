@@ -1,19 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Component } from 'react';
 
 import { ISpeaker, data } from 'SpeakerData';
 
 export interface IUseRequestSpeakers {
 	speakers: ISpeaker[];
-	isLoading: boolean;
-	isLoadError: boolean;
+	componentStatus: ComponentStatusType;
 	loadErrorMessage: string;
 	onFavoriteToggle: (speakerId: string) => void;
 }
 
+export type ComponentStatusType = 'LOADING' | 'LOADERROR' | 'READY';
+
 export const useRequestSpeakers = (delayMs = 1000): IUseRequestSpeakers => {
 	const [speakers, setSpeakers] = useState([] as ISpeaker[]);
-	const [isLoading, setIsLoading] = useState(true);
-	const [isLoadError, setIsLoadError] = useState(false);
+	const [componentStatus, setComponentStatus] = useState('LOADING' as ComponentStatusType);
 	const [loadErrorMessage, setLoadErrorMessage] = useState('');
 
 	const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -23,12 +23,11 @@ export const useRequestSpeakers = (delayMs = 1000): IUseRequestSpeakers => {
 			try {
 				await delay(delayMs);
 				// throw Error('test error');
-				setIsLoading(false);
+				setComponentStatus('READY');
 				setSpeakers(data);
 			} catch (e) {
 				const err = e as Error;
-				setIsLoading(false);
-				setIsLoadError(true);
+				setComponentStatus('LOADERROR');
 				setLoadErrorMessage(err.toString());
 			}
 		};
@@ -44,5 +43,5 @@ export const useRequestSpeakers = (delayMs = 1000): IUseRequestSpeakers => {
 		setSpeakers(newSpeakers);
 	};
 
-	return { speakers, isLoading, isLoadError, loadErrorMessage, onFavoriteToggle };
+	return { speakers, componentStatus, loadErrorMessage, onFavoriteToggle };
 };

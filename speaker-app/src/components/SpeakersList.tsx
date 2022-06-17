@@ -20,37 +20,45 @@ const SpeakerLoader = () => {
 };
 
 export const SpeakersList = ({ showSessionsFlag }: ISpeakersListProps) => {
-	const { speakers, isLoading, isLoadError, loadErrorMessage, onFavoriteToggle } = useRequestSpeakers(2000);
+	const { speakers, componentStatus, loadErrorMessage, onFavoriteToggle } = useRequestSpeakers(2000);
 
-	if (isLoadError === true) {
-		return (
-			<div className="text-danger">
-				<p>
-					ERROR: <b>Loading Speaker data failed.</b>
-				</p>
-				<p>{loadErrorMessage}</p>
-			</div>
-		);
-	}
-
-	return (
-		<div className="container speakers-list">
-			{isLoading ? (
-				<SpeakerLoader />
-			) : (
-				<div className="row">
-					{speakers.map((speaker) => {
-						return (
-							<SpeakerCard
-								key={speaker.speakerId}
-								speaker={speaker}
-								onFavoriteToggle={() => onFavoriteToggle(speaker.speakerId)}
-								showSessionsFlag={showSessionsFlag}
-							/>
-						);
-					})}
+	switch (componentStatus) {
+		case 'LOADERROR':
+			return (
+				<div className="text-danger">
+					<p>
+						ERROR: <b>Loading Speaker data failed.</b>
+					</p>
+					<p>{loadErrorMessage}</p>
 				</div>
-			)}
-		</div>
-	);
+			);
+			break;
+		case 'LOADING':
+			return (
+				<div className="container speakers-list">
+					<SpeakerLoader />
+				</div>
+			);
+			break;
+		case 'READY':
+			return (
+				<div className="container speakers-list">
+					<div className="row">
+						{speakers.map((speaker) => {
+							return (
+								<SpeakerCard
+									key={speaker.speakerId}
+									speaker={speaker}
+									onFavoriteToggle={() => onFavoriteToggle(speaker.speakerId)}
+									showSessionsFlag={showSessionsFlag}
+								/>
+							);
+						})}
+					</div>
+				</div>
+			);
+			break;
+		default:
+			return <div>ERROR: Unknown component status {componentStatus}</div>;
+	}
 };
