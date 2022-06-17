@@ -2,10 +2,8 @@ import { useEffect, useState } from 'react';
 
 import ContentLoader from 'react-content-loader';
 
-import { data } from '../SpeakerData';
-
-import { ISpeaker } from 'SpeakerData';
 import { SpeakerCard } from './SpeakerCard';
+import { useRequestSpeakers } from 'hooks/useRequestSpeakers';
 
 interface ISpeakersListProps {
 	showSessionsFlag: boolean;
@@ -22,40 +20,7 @@ const SpeakerLoader = () => {
 };
 
 export const SpeakersList = ({ showSessionsFlag }: ISpeakersListProps) => {
-	const [speakers, setSpeakers] = useState([] as ISpeaker[]);
-	const [isLoading, setIsLoading] = useState(true);
-	const [isLoadError, setIsLoadError] = useState(false);
-	const [loadErrorMessage, setLoadErrorMessage] = useState('');
-
-	const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
-	useEffect(() => {
-		const delayedAction = async () => {
-			try {
-				await delay(2000);
-				// throw Error('test error');
-				setIsLoading(false);
-				setSpeakers(data);
-			} catch (e) {
-				const err = e as Error;
-				setIsLoading(false);
-				setIsLoadError(true);
-				setLoadErrorMessage(err.toString());
-			}
-		};
-		delayedAction();
-	}, []);
-
-	const onFavoriteToggle = (speakerId: string) => {
-		const oldSpeaker = speakers.find((speaker: ISpeaker) => speaker.speakerId === speakerId);
-		const newSpeaker = { ...oldSpeaker, favoriteFlag: !oldSpeaker?.favoriteFlag };
-		const newSpeakers = speakers.map((speaker: ISpeaker) => {
-			return speaker.speakerId === speakerId ? newSpeaker : speaker;
-		}) as ISpeaker[];
-		setSpeakers(newSpeakers);
-	};
-
-	// if (isLoading === true) return <div>Loading...</div>;
+	const { speakers, isLoading, isLoadError, loadErrorMessage, onFavoriteToggle } = useRequestSpeakers(2000);
 
 	if (isLoadError === true) {
 		return (
