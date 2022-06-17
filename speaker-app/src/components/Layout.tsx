@@ -1,25 +1,20 @@
-import React, { createContext, useState } from 'react';
+import { PropsWithChildren, useContext } from 'react';
+import { ThemeType, ThemeContext, ThemeContextProvider } from '../contexts/ThemeContext';
 
-export type ThemeType = 'light' | 'dark';
-
-interface IThemeContext {
-	themeName: ThemeType;
-	setThemeName: (value: ThemeType) => void;
-}
-
-interface ILayoutProps {
+interface ILayoutProps extends PropsWithChildren {
 	startingTheme: ThemeType;
-	children: JSX.Element;
 }
-
-export const ThemeContext = createContext<IThemeContext>({} as IThemeContext);
 
 export const Layout = ({ startingTheme, children }: ILayoutProps) => {
-	const [themeName, setThemeName] = useState(startingTheme);
-
 	return (
-		<ThemeContext.Provider value={{ setThemeName, themeName }}>
-			<div className={`container-fluid ${themeName}`}>{children}</div>
-		</ThemeContext.Provider>
+		<ThemeContextProvider startingTheme={startingTheme}>
+			<LayoutNoThemeContextProvider>{children}</LayoutNoThemeContextProvider>
+		</ThemeContextProvider>
 	);
+};
+
+const LayoutNoThemeContextProvider = ({ children }: PropsWithChildren) => {
+	const { themeName } = useContext(ThemeContext);
+
+	return <div className={`container-fluid ${themeName}`}>{children}</div>;
 };

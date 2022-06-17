@@ -1,5 +1,5 @@
+import { ThemeContext, ThemeType } from '../contexts/ThemeContext';
 import { useContext } from 'react';
-import { ThemeContext, ThemeType } from './Layout';
 
 interface ISpeakersToolbarProps {
 	showSessionsFlag: boolean;
