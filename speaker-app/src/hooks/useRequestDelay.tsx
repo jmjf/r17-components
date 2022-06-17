@@ -8,7 +8,7 @@ export interface IUseRequestData<T> {
 	data: T[];
 	requestStatus: RequestStatusType;
 	loadErrorMessage: string;
-	saveData: (newRecord: T) => void;
+	saveData: (newRecord: T, doneCallback: () => void) => void;
 }
 
 export type RequestStatusType = 'LOADING' | 'LOADERROR' | 'READY';
@@ -34,22 +34,28 @@ export function useRequestDelay<T extends IRequestData>(getData: () => T[], dela
 			}
 		};
 		delayedAction();
-	});
+	}, [delayMs, getData]);
 
-	const saveData = (newRecord: T): void => {
+	// default callback does nothing, making it optional
+	const saveData = (
+		newRecord: T,
+		doneCallback = () => {
+			return;
+		}
+	): void => {
 		const newData = data.map((rec) => {
 			return rec.id === newRecord.id ? newRecord : rec;
 		});
 
 		const delayedAction = async () => {
 			try {
-				setRequestStatus('LOADING');
 				await delay(delayMs);
+				doneCallback();
 				setData(newData);
-				setRequestStatus('READY');
 			} catch (e) {
 				const err = e as Error;
 				console.log('saveData() error', err.toString());
+				doneCallback();
 			}
 		};
 		delayedAction();

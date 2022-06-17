@@ -51,8 +51,8 @@ export const SpeakersList = ({ showSessionsFlag }: ISpeakersListProps) => {
 								<SpeakerCard
 									key={speaker.id}
 									speaker={speaker}
-									onFavoriteToggle={() => {
-										saveData({ ...speaker, favoriteFlag: !speaker.favoriteFlag } as ISpeaker);
+									onFavoriteToggle={(doneCallback: () => void) => {
+										saveData({ ...speaker, favoriteFlag: !speaker.favoriteFlag } as ISpeaker, doneCallback);
 									}}
 									showSessionsFlag={showSessionsFlag}
 								/>

@@ -1,11 +1,12 @@
 import { ISpeaker } from '../SpeakerData';
 
 import { Sessions } from 'components/Sessions';
+import { useState } from 'react';
 
 interface ISpeakerCardProps {
 	speaker: ISpeaker;
 	showSessionsFlag: boolean;
-	onFavoriteToggle: () => void;
+	onFavoriteToggle: (doneCallback: () => void) => void;
 }
 
 export const SpeakerCard = ({ speaker, showSessionsFlag, onFavoriteToggle }: ISpeakerCardProps) => {
@@ -47,7 +48,7 @@ interface ISpeakerInfoProps {
 	companyName: string;
 	twitterHandle: string;
 	favoriteFlag: boolean;
-	onFavoriteToggle: () => void;
+	onFavoriteToggle: (doneCallback: () => void) => void;
 }
 
 const SpeakerInfo = ({
@@ -86,13 +87,24 @@ const SpeakerInfo = ({
 
 interface IFavoriteToggleProps {
 	favoriteFlag: boolean;
-	onFavoriteToggle: () => void;
+	onFavoriteToggle: (doneCallback: () => void) => void;
 }
+
 const FavoriteToggle = ({ favoriteFlag, onFavoriteToggle }: IFavoriteToggleProps) => {
+	const [isUpdating, setIsUpdating] = useState(false);
+
+	const onClickHandler = () => {
+		setIsUpdating(true);
+		onFavoriteToggle(() => {
+			setIsUpdating(false);
+		});
+	};
+
 	return (
 		<div className="action padB1">
-			<span onClick={onFavoriteToggle}>
+			<span onClick={onClickHandler}>
 				<i className={favoriteFlag === true ? 'fa fa-star orange' : 'fa fa-star-o orange'} /> Favorite{' '}
+				{isUpdating ? <span className="fas fa-sync fa-spin"></span> : null}
 			</span>
 		</div>
 	);
