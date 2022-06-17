@@ -43,19 +43,22 @@ export function useRequestDelay<T extends IRequestData>(getData: () => T[], dela
 			return;
 		}
 	): void => {
+		const oldData = [...data];
+
 		const newData = data.map((rec) => {
 			return rec.id === newRecord.id ? newRecord : rec;
 		});
 
 		const delayedAction = async () => {
 			try {
+				setData(newData);
 				await delay(delayMs);
 				doneCallback();
-				setData(newData);
 			} catch (e) {
 				const err = e as Error;
 				console.log('saveData() error', err.toString());
 				doneCallback();
+				setData(oldData);
 			}
 		};
 		delayedAction();
