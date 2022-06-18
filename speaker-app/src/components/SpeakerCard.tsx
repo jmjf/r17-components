@@ -4,17 +4,25 @@ import { ISpeaker } from '../SpeakerData';
 import { SpeakerControlsContext } from 'contexts/SpeakerControlsContext';
 import { Sessions } from 'components/Sessions';
 import { SpeakerContext, SpeakerContextProvider } from 'contexts/SpeakerContext';
+import { DMLFunctionType } from 'hooks/useRequestDelay';
 
 interface ISpeakerCardProps {
 	speaker: ISpeaker;
-	updateSpeaker: (speaker: ISpeaker, doneCallback: () => void) => void;
+	updateSpeaker: DMLFunctionType<ISpeaker>;
+	insertSpeaker: DMLFunctionType<ISpeaker>;
+	deleteSpeaker: DMLFunctionType<ISpeaker>;
 }
 
-export const SpeakerCard = ({ speaker, updateSpeaker }: ISpeakerCardProps) => {
+export const SpeakerCard = ({ speaker, updateSpeaker, insertSpeaker, deleteSpeaker }: ISpeakerCardProps) => {
 	const { showSessionsFlag } = useContext(SpeakerControlsContext);
 
 	return (
-		<SpeakerContextProvider speaker={speaker} updateSpeaker={updateSpeaker}>
+		<SpeakerContextProvider
+			speaker={speaker}
+			updateSpeaker={updateSpeaker}
+			insertSpeaker={insertSpeaker}
+			deleteSpeaker={deleteSpeaker}
+		>
 			<div key={speaker.id} className="col-xs-12 col-sm-12 col-md-6 col-lg-4 col-sm-12 col-xs-12">
 				<div className="card card-height p-4 mt-4">
 					<SpeakerImage />

@@ -25,6 +25,8 @@ export const SpeakersList = () => {
 		requestStatus,
 		loadErrorMessage,
 		updateData,
+		insertData,
+		deleteData,
 	} = useRequestDelay<ISpeaker>(getSpeakerData, 2000);
 	const { eventYear, searchText } = useContext(SpeakerControlsContext);
 
@@ -59,7 +61,15 @@ export const SpeakersList = () => {
 									speaker.sessions.some((session) => session.eventYear === eventYear)
 							)
 							.map((speaker) => {
-								return <SpeakerCard key={speaker.id} speaker={speaker} updateSpeaker={updateData} />;
+								return (
+									<SpeakerCard
+										key={speaker.id}
+										speaker={speaker}
+										updateSpeaker={updateData}
+										insertSpeaker={insertData}
+										deleteSpeaker={deleteData}
+									/>
+								);
 							})}
 					</div>
 				</div>

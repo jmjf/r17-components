@@ -4,17 +4,24 @@ export interface IRequestData {
 	id: string;
 }
 
-export interface IUseRequestData<T> {
-	data: T[];
+export type DMLFunctionType<DataItemType> = (dataItem: DataItemType, doneCallback: () => void) => void;
+
+export interface IUseRequestData<DataItemType> {
+	data: DataItemType[];
 	requestStatus: RequestStatusType;
 	loadErrorMessage: string;
-	updateData: (newRecord: T, doneCallback: () => void) => void;
+	updateData: DMLFunctionType<DataItemType>;
+	insertData: DMLFunctionType<DataItemType>;
+	deleteData: DMLFunctionType<DataItemType>;
 }
 
 export type RequestStatusType = 'LOADING' | 'LOADERROR' | 'READY';
 
-export function useRequestDelay<T extends IRequestData>(getData: () => T[], delayMs = 1000): IUseRequestData<T> {
-	const [data, setData] = useState([] as T[]);
+export function useRequestDelay<DataItemType extends IRequestData>(
+	getData: () => DataItemType[],
+	delayMs = 1000
+): IUseRequestData<DataItemType> {
+	const [data, setData] = useState([] as DataItemType[]);
 	const [requestStatus, setRequestStatus] = useState('LOADING' as RequestStatusType);
 	const [loadErrorMessage, setLoadErrorMessage] = useState('');
 
@@ -38,7 +45,7 @@ export function useRequestDelay<T extends IRequestData>(getData: () => T[], dela
 
 	// default callback does nothing, making it optional
 	const updateData = (
-		newRecord: T,
+		dataItem: DataItemType,
 		doneCallback = () => {
 			return;
 		}
@@ -46,7 +53,7 @@ export function useRequestDelay<T extends IRequestData>(getData: () => T[], dela
 		const oldData = [...data];
 
 		const newData = data.map((rec) => {
-			return rec.id === newRecord.id ? newRecord : rec;
+			return rec.id === dataItem.id ? dataItem : rec;
 		});
 
 		const delayedAction = async () => {
@@ -64,5 +71,55 @@ export function useRequestDelay<T extends IRequestData>(getData: () => T[], dela
 		delayedAction();
 	};
 
-	return { data, requestStatus, loadErrorMessage, updateData };
+	// default callback does nothing, making it optional
+	const insertData = (
+		dataItem: DataItemType,
+		doneCallback = () => {
+			return;
+		}
+	): void => {
+		const oldData = [...data];
+		const newData = [dataItem, ...data];
+
+		const delayedAction = async () => {
+			try {
+				setData(newData);
+				await delay(delayMs);
+				doneCallback();
+			} catch (e) {
+				const err = e as Error;
+				console.log('saveData() error', err.toString());
+				doneCallback();
+				setData(oldData);
+			}
+		};
+		delayedAction();
+	};
+
+	// default callback does nothing, making it optional
+	const deleteData = (
+		dataItem: DataItemType,
+		doneCallback = () => {
+			return;
+		}
+	): void => {
+		const oldData = [...data];
+		const newData = data.filter((item) => item.id !== dataItem.id);
+
+		const delayedAction = async () => {
+			try {
+				setData(newData);
+				await delay(delayMs);
+				doneCallback();
+			} catch (e) {
+				const err = e as Error;
+				console.log('saveData() error', err.toString());
+				doneCallback();
+				setData(oldData);
+			}
+		};
+		delayedAction();
+	};
+
+	return { data, requestStatus, loadErrorMessage, updateData, insertData, deleteData };
 }
