@@ -1,14 +1,14 @@
-import { SpeakerControlsContext } from 'contexts/SpeakerControlsContext';
 import { useContext } from 'react';
-import { ISession } from 'SpeakerData';
+
+import { SpeakerContext } from 'contexts/SpeakerContext';
+import { SpeakerControlsContext } from 'contexts/SpeakerControlsContext';
 import { Session } from './Session';
 
-interface ISessionsProps {
-	sessions: ISession[];
-}
-
-export const Sessions = ({ sessions }: ISessionsProps) => {
+export const Sessions = () => {
 	const { eventYear } = useContext(SpeakerControlsContext);
+	const {
+		speaker: { sessions },
+	} = useContext(SpeakerContext);
 
 	return (
 		<div className="sessionBox card h-250">

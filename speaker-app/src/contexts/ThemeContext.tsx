@@ -1,9 +1,8 @@
-import React, { createContext } from 'react';
+import React, { createContext, PropsWithChildren } from 'react';
 import { useTheme, IThemeState, ThemeType } from '../hooks/useTheme';
 
-interface IThemeContextProps {
+interface IThemeContextProps extends PropsWithChildren {
 	startingTheme: ThemeType;
-	children: JSX.Element;
 }
 
 export const ThemeContext = createContext<IThemeState>({} as IThemeState);

@@ -3,34 +3,33 @@ import { useContext, useState } from 'react';
 import { ISpeaker } from '../SpeakerData';
 import { SpeakerControlsContext } from 'contexts/SpeakerControlsContext';
 import { Sessions } from 'components/Sessions';
+import { SpeakerContext, SpeakerContextProvider } from 'contexts/SpeakerContext';
 
 interface ISpeakerCardProps {
 	speaker: ISpeaker;
-	onFavoriteToggle: (doneCallback: () => void) => void;
+	updateSpeaker: (speaker: ISpeaker) => void;
+	//updateSpeaker: (doneCallback: () => void) => void;
 }
 
-export const SpeakerCard = ({ speaker, onFavoriteToggle }: ISpeakerCardProps) => {
+export const SpeakerCard = ({ speaker, updateSpeaker }: ISpeakerCardProps) => {
 	const { showSessionsFlag } = useContext(SpeakerControlsContext);
-	const { id: speakerId, firstName, lastName, sessions } = speaker;
 
 	return (
-		<div key={speakerId} className="col-xs-12 col-sm-12 col-md-6 col-lg-4 col-sm-12 col-xs-12">
-			<div className="card card-height p-4 mt-4">
-				<SpeakerImage speakerId={speakerId} firstName={firstName} lastName={lastName} />
-				<SpeakerInfo {...speaker} onFavoriteToggle={onFavoriteToggle} />
+		<SpeakerContextProvider speaker={speaker} updateSpeaker={updateSpeaker}>
+			<div key={speaker.id} className="col-xs-12 col-sm-12 col-md-6 col-lg-4 col-sm-12 col-xs-12">
+				<div className="card card-height p-4 mt-4">
+					<SpeakerImage />
+					<SpeakerInfo />
+				</div>
+				{showSessionsFlag === true ? <Sessions /> : null}
 			</div>
-			{showSessionsFlag === true ? <Sessions sessions={sessions} /> : null}
-		</div>
+		</SpeakerContextProvider>
 	);
 };
 
-interface ISpeakerImageProps {
-	speakerId: string;
-	firstName: string;
-	lastName: string;
-}
-
-const SpeakerImage = ({ speakerId, firstName, lastName }: ISpeakerImageProps) => {
+const SpeakerImage = () => {
+	const { speaker } = useContext(SpeakerContext);
+	const { id: speakerId, firstName, lastName } = speaker;
 	return (
 		<div className="speaker-img d-flex flex-row justify-content-center align-items-center h300">
 			<img
@@ -43,25 +42,9 @@ const SpeakerImage = ({ speakerId, firstName, lastName }: ISpeakerImageProps) =>
 	);
 };
 
-interface ISpeakerInfoProps {
-	firstName: string;
-	lastName: string;
-	bioText: string;
-	companyName: string;
-	twitterHandle: string;
-	favoriteFlag: boolean;
-	onFavoriteToggle: (doneCallback: () => void) => void;
-}
-
-const SpeakerInfo = ({
-	firstName,
-	lastName,
-	bioText,
-	companyName,
-	twitterHandle,
-	favoriteFlag,
-	onFavoriteToggle,
-}: ISpeakerInfoProps) => {
+const SpeakerInfo = () => {
+	const { speaker } = useContext(SpeakerContext);
+	const { firstName, lastName, bioText, companyName, twitterHandle } = speaker;
 	return (
 		<div className="speaker-info">
 			<div className="d-flex justify-content-between mb-3">
@@ -69,7 +52,7 @@ const SpeakerInfo = ({
 					{firstName} {lastName}
 				</h3>
 			</div>
-			<FavoriteToggle favoriteFlag={favoriteFlag} onFavoriteToggle={onFavoriteToggle} />
+			<FavoriteToggle />
 			<div>
 				<p className="card-description">{bioText}</p>
 				<div className="social d-flex flex-row mt-4">
@@ -87,25 +70,20 @@ const SpeakerInfo = ({
 	);
 };
 
-interface IFavoriteToggleProps {
-	favoriteFlag: boolean;
-	onFavoriteToggle: (doneCallback: () => void) => void;
-}
-
-const FavoriteToggle = ({ favoriteFlag, onFavoriteToggle }: IFavoriteToggleProps) => {
+const FavoriteToggle = () => {
 	const [isUpdating, setIsUpdating] = useState(false);
+	const { speaker, updateSpeaker } = useContext(SpeakerContext);
+	const doneCallback = () => setIsUpdating(false);
 
 	const onClickHandler = () => {
 		setIsUpdating(true);
-		onFavoriteToggle(() => {
-			setIsUpdating(false);
-		});
+		updateSpeaker({ ...speaker, favoriteFlag: !speaker.favoriteFlag }, doneCallback);
 	};
 
 	return (
 		<div className="action padB1">
 			<span onClick={onClickHandler}>
-				<i className={favoriteFlag === true ? 'fa fa-star orange' : 'fa fa-star-o orange'} /> Favorite{' '}
+				<i className={speaker.favoriteFlag === true ? 'fa fa-star orange' : 'fa fa-star-o orange'} /> Favorite{' '}
 				{isUpdating ? <span className="fas fa-sync fa-spin"></span> : null}
 			</span>
 		</div>

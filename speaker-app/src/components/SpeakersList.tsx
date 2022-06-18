@@ -59,18 +59,7 @@ export const SpeakersList = () => {
 									speaker.sessions.some((session) => session.eventYear === eventYear)
 							)
 							.map((speaker) => {
-								return (
-									<SpeakerCard
-										key={speaker.id}
-										speaker={speaker}
-										onFavoriteToggle={(doneCallback: () => void) => {
-											saveData(
-												{ ...speaker, favoriteFlag: !speaker.favoriteFlag } as ISpeaker,
-												doneCallback
-											);
-										}}
-									/>
-								);
+								return <SpeakerCard key={speaker.id} speaker={speaker} updateSpeaker={updateSpeaker} />;
 							})}
 					</div>
 				</div>
