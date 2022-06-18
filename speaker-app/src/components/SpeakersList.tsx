@@ -1,7 +1,10 @@
+import { useContext } from 'react';
+
 import ContentLoader from 'react-content-loader';
 
 import { SpeakerCard } from './SpeakerCard';
 import { useRequestDelay } from '../hooks/useRequestDelay';
+import { SpeakerControlsContext } from 'contexts/SpeakerControlsContext';
 
 import { ISpeaker, getSpeakerData } from '../SpeakerData';
 
@@ -23,6 +26,7 @@ export const SpeakersList = () => {
 		loadErrorMessage,
 		saveData,
 	} = useRequestDelay<ISpeaker>(getSpeakerData, 2000);
+	const { eventYear, searchText } = useContext(SpeakerControlsContext);
 
 	switch (requestStatus) {
 		case 'LOADERROR':
@@ -46,17 +50,28 @@ export const SpeakersList = () => {
 			return (
 				<div className="container speakers-list">
 					<div className="row">
-						{speakers.map((speaker) => {
-							return (
-								<SpeakerCard
-									key={speaker.id}
-									speaker={speaker}
-									onFavoriteToggle={(doneCallback: () => void) => {
-										saveData({ ...speaker, favoriteFlag: !speaker.favoriteFlag } as ISpeaker, doneCallback);
-									}}
-								/>
-							);
-						})}
+						{speakers
+							.filter(
+								(speaker) =>
+									// last or first name includes the searchText (case insensitive) && has sessions in the selected eventYear
+									(speaker.lastName.toLowerCase().includes(searchText.toLowerCase()) ||
+										speaker.firstName.toLowerCase().includes(searchText.toLowerCase())) &&
+									speaker.sessions.some((session) => session.eventYear === eventYear)
+							)
+							.map((speaker) => {
+								return (
+									<SpeakerCard
+										key={speaker.id}
+										speaker={speaker}
+										onFavoriteToggle={(doneCallback: () => void) => {
+											saveData(
+												{ ...speaker, favoriteFlag: !speaker.favoriteFlag } as ISpeaker,
+												doneCallback
+											);
+										}}
+									/>
+								);
+							})}
 					</div>
 				</div>
 			);

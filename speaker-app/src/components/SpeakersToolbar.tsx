@@ -5,7 +5,8 @@ import { ThemeContext } from '../contexts/ThemeContext';
 import { ThemeType } from 'hooks/useTheme';
 
 export const SpeakersToolbar = () => {
-	const { showSessionsFlag, setShowSessionsFlag } = useContext(SpeakerControlsContext);
+	const { showSessionsFlag, setShowSessionsFlag, setSearchText, eventYear, setEventYear, EVENT_YEARS } =
+		useContext(SpeakerControlsContext);
 	const { themeName, setThemeName } = useContext(ThemeContext);
 
 	return (
@@ -34,6 +35,41 @@ export const SpeakersToolbar = () => {
 								>
 									<option value="light">Light</option>
 									<option value="dark">Dark</option>
+								</select>
+							</label>
+						</li>
+						<li>
+							<div className="input-group">
+								<input
+									type="text"
+									className="form-control"
+									placeholder="Search..."
+									onChange={(ev) => {
+										setSearchText(ev.target.value);
+									}}
+								/>
+								<div className="input-group-append">
+									<button className="btn btn-secondary" type="button">
+										<i className="fa fa-search"></i>
+									</button>
+								</div>
+							</div>
+						</li>
+						<li className="d-flex flex-column flex-md-row">
+							<strong>Event Year</strong>
+							<label className="dropdown">
+								<select
+									className="form-control theme"
+									value={eventYear}
+									onChange={({ currentTarget }) => setEventYear(currentTarget.value)}
+								>
+									{EVENT_YEARS.map((eventYear) => {
+										return (
+											<option key={eventYear} value={eventYear}>
+												{eventYear}
+											</option>
+										);
+									})}
 								</select>
 							</label>
 						</li>
