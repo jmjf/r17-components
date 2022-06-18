@@ -1,12 +1,11 @@
-import { ThemeContext, ThemeType } from '../contexts/ThemeContext';
 import { useContext } from 'react';
 
-interface ISpeakersToolbarProps {
-	showSessionsFlag: boolean;
-	setShowSessionsFlag: (value: boolean) => void;
-}
+import { SpeakerControlsContext } from 'contexts/SpeakerControlsContext';
+import { ThemeContext } from '../contexts/ThemeContext';
+import { ThemeType } from 'hooks/useTheme';
 
-export const SpeakersToolbar = ({ showSessionsFlag, setShowSessionsFlag }: ISpeakersToolbarProps) => {
+export const SpeakersToolbar = () => {
+	const { showSessionsFlag, setShowSessionsFlag } = useContext(SpeakerControlsContext);
 	const { themeName, setThemeName } = useContext(ThemeContext);
 
 	return (

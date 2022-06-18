@@ -1,5 +1,6 @@
 import { PropsWithChildren, useContext } from 'react';
-import { ThemeType, ThemeContext, ThemeContextProvider } from '../contexts/ThemeContext';
+import { ThemeType } from 'hooks/useTheme';
+import { ThemeContext, ThemeContextProvider } from '../contexts/ThemeContext';
 
 interface ILayoutProps extends PropsWithChildren {
 	startingTheme: ThemeType;

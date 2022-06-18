@@ -1,7 +1,7 @@
-import { ThemeType } from 'contexts/ThemeContext';
 import { useState } from 'react';
 
-interface IThemeState {
+export type ThemeType = 'light' | 'dark';
+export interface IThemeState {
 	themeName: ThemeType;
 	setThemeName: (newThemeName: ThemeType) => void;
 }

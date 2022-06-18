@@ -1,19 +1,12 @@
-import React, { createContext, Dispatch, SetStateAction } from 'react';
-import { useTheme } from '../hooks/useTheme';
-
-export type ThemeType = 'light' | 'dark';
-
-interface IThemeContext {
-	themeName: ThemeType;
-	setThemeName: (newThemeName: ThemeType) => void;
-}
+import React, { createContext } from 'react';
+import { useTheme, IThemeState, ThemeType } from '../hooks/useTheme';
 
 interface IThemeContextProps {
 	startingTheme: ThemeType;
 	children: JSX.Element;
 }
 
-export const ThemeContext = createContext<IThemeContext>({} as IThemeContext);
+export const ThemeContext = createContext<IThemeState>({} as IThemeState);
 
 export const ThemeContextProvider = ({ startingTheme, children }: IThemeContextProps) => {
 	const { themeName, setThemeName } = useTheme(startingTheme);

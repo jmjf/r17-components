@@ -1,16 +1,18 @@
-import { ISpeaker } from '../SpeakerData';
+import { useContext, useState } from 'react';
 
+import { ISpeaker } from '../SpeakerData';
+import { SpeakerControlsContext } from 'contexts/SpeakerControlsContext';
 import { Sessions } from 'components/Sessions';
-import { useState } from 'react';
 
 interface ISpeakerCardProps {
 	speaker: ISpeaker;
-	showSessionsFlag: boolean;
 	onFavoriteToggle: (doneCallback: () => void) => void;
 }
 
-export const SpeakerCard = ({ speaker, showSessionsFlag, onFavoriteToggle }: ISpeakerCardProps) => {
+export const SpeakerCard = ({ speaker, onFavoriteToggle }: ISpeakerCardProps) => {
+	const { showSessionsFlag } = useContext(SpeakerControlsContext);
 	const { id: speakerId, firstName, lastName, sessions } = speaker;
+
 	return (
 		<div key={speakerId} className="col-xs-12 col-sm-12 col-md-6 col-lg-4 col-sm-12 col-xs-12">
 			<div className="card card-height p-4 mt-4">

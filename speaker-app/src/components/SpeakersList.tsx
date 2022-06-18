@@ -5,10 +5,6 @@ import { useRequestDelay } from '../hooks/useRequestDelay';
 
 import { ISpeaker, getSpeakerData } from '../SpeakerData';
 
-interface ISpeakersListProps {
-	showSessionsFlag: boolean;
-}
-
 const SpeakerLoader = () => {
 	return (
 		<ContentLoader viewBox="0 0 380 70">
@@ -19,7 +15,7 @@ const SpeakerLoader = () => {
 	);
 };
 
-export const SpeakersList = ({ showSessionsFlag }: ISpeakersListProps) => {
+export const SpeakersList = () => {
 	// data: speakers -> renames data to speakers
 	const {
 		data: speakers,
@@ -40,7 +36,11 @@ export const SpeakersList = ({ showSessionsFlag }: ISpeakersListProps) => {
 			);
 			break;
 		case 'LOADING':
-			return <div className="container speakers-list">Loading...</div>;
+			return (
+				<div className="container speakers-list">
+					<span className="fas fa-5x fa-sync fa-spin"></span>
+				</div>
+			);
 			break;
 		case 'READY':
 			return (
@@ -54,7 +54,6 @@ export const SpeakersList = ({ showSessionsFlag }: ISpeakersListProps) => {
 									onFavoriteToggle={(doneCallback: () => void) => {
 										saveData({ ...speaker, favoriteFlag: !speaker.favoriteFlag } as ISpeaker, doneCallback);
 									}}
-									showSessionsFlag={showSessionsFlag}
 								/>
 							);
 						})}
