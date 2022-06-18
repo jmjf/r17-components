@@ -7,8 +7,7 @@ import { SpeakerContext, SpeakerContextProvider } from 'contexts/SpeakerContext'
 
 interface ISpeakerCardProps {
 	speaker: ISpeaker;
-	updateSpeaker: (speaker: ISpeaker) => void;
-	//updateSpeaker: (doneCallback: () => void) => void;
+	updateSpeaker: (speaker: ISpeaker, doneCallback: () => void) => void;
 }
 
 export const SpeakerCard = ({ speaker, updateSpeaker }: ISpeakerCardProps) => {

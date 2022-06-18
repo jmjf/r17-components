@@ -8,7 +8,7 @@ export interface IUseRequestData<T> {
 	data: T[];
 	requestStatus: RequestStatusType;
 	loadErrorMessage: string;
-	saveData: (newRecord: T, doneCallback: () => void) => void;
+	updateData: (newRecord: T, doneCallback: () => void) => void;
 }
 
 export type RequestStatusType = 'LOADING' | 'LOADERROR' | 'READY';
@@ -37,7 +37,7 @@ export function useRequestDelay<T extends IRequestData>(getData: () => T[], dela
 	}, [delayMs, getData]);
 
 	// default callback does nothing, making it optional
-	const saveData = (
+	const updateData = (
 		newRecord: T,
 		doneCallback = () => {
 			return;
@@ -64,5 +64,5 @@ export function useRequestDelay<T extends IRequestData>(getData: () => T[], dela
 		delayedAction();
 	};
 
-	return { data, requestStatus, loadErrorMessage, saveData };
+	return { data, requestStatus, loadErrorMessage, updateData };
 }
