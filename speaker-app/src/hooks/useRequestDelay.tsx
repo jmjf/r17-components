@@ -4,7 +4,7 @@ export interface IRequestData {
 	id: string;
 }
 
-export type DMLFunctionType<DataItemType> = (dataItem: DataItemType, doneCallback: () => void) => void;
+export type DMLFunctionType<DataItemType> = (dataItem: DataItemType, doneCallback?: () => void) => void;
 
 export interface IUseRequestData<DataItemType> {
 	data: DataItemType[];

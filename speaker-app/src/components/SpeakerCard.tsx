@@ -5,6 +5,7 @@ import { SpeakerControlsContext } from 'contexts/SpeakerControlsContext';
 import { Sessions } from 'components/Sessions';
 import { SpeakerContext, SpeakerContextProvider } from 'contexts/SpeakerContext';
 import { DMLFunctionType } from 'hooks/useRequestDelay';
+import { DeleteSpeaker } from './DeleteSpeaker';
 
 interface ISpeakerCardProps {
 	speaker: ISpeaker;
@@ -29,6 +30,7 @@ export const SpeakerCard = ({ speaker, updateSpeaker, insertSpeaker, deleteSpeak
 					<SpeakerInfo />
 				</div>
 				{showSessionsFlag === true ? <Sessions /> : null}
+				<DeleteSpeaker />
 			</div>
 		</SpeakerContextProvider>
 	);

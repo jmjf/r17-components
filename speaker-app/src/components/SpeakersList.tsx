@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import ContentLoader from 'react-content-loader';
 
 import { SpeakerCard } from './SpeakerCard';
+import { AddSpeaker } from './AddSpeaker';
 import { useRequestDelay } from '../hooks/useRequestDelay';
 import { SpeakerControlsContext } from 'contexts/SpeakerControlsContext';
 
@@ -51,6 +52,7 @@ export const SpeakersList = () => {
 		case 'READY':
 			return (
 				<div className="container speakers-list">
+					<AddSpeaker eventYear={eventYear} insertSpeaker={insertData} />
 					<div className="row">
 						{speakers
 							.filter(

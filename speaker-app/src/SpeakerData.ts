@@ -2,7 +2,7 @@ import { IRequestData } from 'hooks/useRequestDelay';
 
 export interface IRoom {
 	roomName: string;
-	maxPeopleCount: number;
+	maxPeopleCount?: number;
 }
 
 export interface ISession {
@@ -16,10 +16,10 @@ export interface ISpeaker extends IRequestData {
 	id: string;
 	firstName: string;
 	lastName: string;
-	companyName: string;
+	companyName?: string;
 	bioText: string;
-	twitterHandle: string;
-	favoriteFlag: boolean;
+	twitterHandle?: string;
+	favoriteFlag?: boolean;
 	sessions: ISession[];
 }
 
