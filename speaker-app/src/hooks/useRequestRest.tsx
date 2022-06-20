@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const speakersApiUrl = 'api/speakers';
+const defaultApiUrl = 'api';
 
 export interface IRequestData {
 	id: string;
@@ -21,13 +21,11 @@ export interface IUseRequestData<DataItemType> {
 export type RequestStatusType = 'LOADING' | 'LOADERROR' | 'READY';
 
 export function useRequestRest<DataItemType extends IRequestData>(
-	apiUrl = speakersApiUrl
+	apiUrl = defaultApiUrl
 ): IUseRequestData<DataItemType> {
 	const [data, setData] = useState<DataItemType[]>([] as DataItemType[]);
 	const [requestStatus, setRequestStatus] = useState<RequestStatusType>('LOADING' as RequestStatusType);
 	const [loadErrorMessage, setLoadErrorMessage] = useState('');
-
-	const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 	useEffect(() => {
 		const delayedAction = async () => {
@@ -42,7 +40,7 @@ export function useRequestRest<DataItemType extends IRequestData>(
 			}
 		};
 		delayedAction();
-	}, [apiUrl]);
+	}, []);
 
 	// default callback does nothing, making it optional
 	const updateData = (
@@ -85,7 +83,10 @@ export function useRequestRest<DataItemType extends IRequestData>(
 		const delayedAction = async () => {
 			try {
 				setData(newData);
-				await axios.post(`${apiUrl}`, dataItem);
+				// newData has a fake id, replace data after API call to get real id
+				const res = await axios.post(`${apiUrl}`, dataItem);
+				const finalData = [res.data, ...oldData];
+				setData(finalData);
 				doneCallback();
 			} catch (e) {
 				const err = e as Error;

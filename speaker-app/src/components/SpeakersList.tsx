@@ -7,7 +7,8 @@ import { AddSpeaker } from './AddSpeaker';
 import { useRequestDelay } from '../hooks/useRequestDelay';
 import { SpeakerControlsContext } from 'contexts/SpeakerControlsContext';
 
-import { ISpeaker, getSpeakerData } from '../SpeakerData';
+import { ISpeaker } from '../SpeakerData';
+import { useRequestRest } from 'hooks/useRequestRest';
 
 const SpeakerLoader = () => {
 	return (
@@ -19,6 +20,8 @@ const SpeakerLoader = () => {
 	);
 };
 
+const speakerApiUrl = 'api/speakers';
+
 export const SpeakersList = () => {
 	// data: speakers -> renames data to speakers
 	const {
@@ -28,7 +31,7 @@ export const SpeakersList = () => {
 		updateData,
 		insertData,
 		deleteData,
-	} = useRequestDelay<ISpeaker>(getSpeakerData, 2000);
+	} = useRequestRest<ISpeaker>(speakerApiUrl);
 	const { eventYear, searchText } = useContext(SpeakerControlsContext);
 
 	switch (requestStatus) {

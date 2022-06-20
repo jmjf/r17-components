@@ -36,12 +36,31 @@ export const SpeakerCard = ({ speaker, updateSpeaker, insertSpeaker, deleteSpeak
 	);
 };
 
+interface ImageWithFallbackProps {
+	src: string;
+	[key: string]: unknown;
+}
+
+const ImageWithFallback = ({ src, ...props }: ImageWithFallbackProps) => {
+	const [error, setError] = useState(false);
+	const [imgSrc, setImgSrc] = useState(src);
+
+	const onError = () => {
+		if (!error) {
+			setImgSrc('/images/speaker-99999.jpg');
+			setError(true);
+		}
+	};
+
+	return <img src={imgSrc} {...props} onError={onError} />;
+};
+
 const SpeakerImage = () => {
 	const { speaker } = useContext(SpeakerContext);
 	const { id: speakerId, firstName, lastName } = speaker;
 	return (
 		<div className="speaker-img d-flex flex-row justify-content-center align-items-center h300">
-			<img
+			<ImageWithFallback
 				className="contain-fit"
 				src={`/images/speaker-${speakerId}.jpg`}
 				width="300"
