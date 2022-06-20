@@ -42,15 +42,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 				case 'PUT':
 					methodResult = await putMethod(speakers);
 					break;
-				case 'POST':
-					methodResult = await postMethod(speakers);
-					break;
 				case 'DELETE':
 					methodResult = await deleteMethod(speakers);
 					break;
 				default:
 					logMessage('ERROR', `${method} /api/speakers/${id} | unknown method ${method}`);
-					res.status(501).send(`${method} not implemented`);
+					res.status(501).send(`${method} not implemented for id path`);
 					return;
 					break;
 			}
@@ -72,19 +69,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	async function putMethod(speakers: ISpeaker[]): Promise<MethodResultType> {
 		const newSpeakers = speakers.map((speaker) => (speaker.id === id ? body : speaker));
 		return { statusCode: 200, responseBody: JSON.stringify(body), fileData: newSpeakers };
-	}
-
-	async function postMethod(speakers: ISpeaker[]): Promise<MethodResultType> {
-		const newId = (
-			speakers.reduce((acc, cur) => {
-				const curId = parseInt(cur.id);
-				return curId > acc ? curId : acc;
-			}, 0) + 1
-		).toString();
-		const newSpeaker = { ...body, id: newId.toString() };
-		const newSpeakers = [newSpeaker, ...speakers];
-
-		return { statusCode: 201, responseBody: JSON.stringify(newSpeaker), fileData: newSpeakers };
 	}
 
 	async function deleteMethod(speakers: ISpeaker[]): Promise<MethodResultType> {
