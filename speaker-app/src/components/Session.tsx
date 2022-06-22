@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 interface ISessionProps {
 	sessionName: string;
 	roomName: string;

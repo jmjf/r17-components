@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { memo, useContext, useState } from 'react';
 
 import { ISpeaker } from '../SpeakerData';
 import { SpeakerControlsContext } from 'contexts/SpeakerControlsContext';
@@ -41,19 +41,22 @@ interface ImageWithFallbackProps {
 	[key: string]: unknown;
 }
 
-const ImageWithFallback = ({ src, ...props }: ImageWithFallbackProps) => {
-	const [error, setError] = useState(false);
-	const [imgSrc, setImgSrc] = useState(src);
+const ImageWithFallback = memo(
+	function ImageWithFallback({ src, ...props }: ImageWithFallbackProps) {
+		const [error, setError] = useState(false);
+		const [imgSrc, setImgSrc] = useState(src);
 
-	const onError = () => {
-		if (!error) {
-			setImgSrc('/images/speaker-99999.jpg');
-			setError(true);
-		}
-	};
+		const onError = () => {
+			if (!error) {
+				setImgSrc('/images/speaker-99999.jpg');
+				setError(true);
+			}
+		};
 
-	return <img src={imgSrc} {...props} onError={onError} />;
-};
+		return <img src={imgSrc} {...props} onError={onError} />;
+	},
+	(prevProps, nextProps) => prevProps.src === nextProps.src
+);
 
 const SpeakerImage = () => {
 	const { speaker } = useContext(SpeakerContext);
