@@ -15,12 +15,15 @@ interface ISpeakerCardProps extends PropsWithChildren {
 	deleteSpeaker: DMLFunctionType<ISpeaker>;
 }
 
-export const SpeakerCardNoErrorBoundary = ({
-	speaker,
-	updateSpeaker,
-	insertSpeaker,
-	deleteSpeaker,
-}: ISpeakerCardProps) => {
+export const SpeakerCard = (props: ISpeakerCardProps) => {
+	return (
+		<ErrorBoundary errorUI={<ErrorSpeakerCard />}>
+			<OKSpeakerCard {...props}></OKSpeakerCard>
+		</ErrorBoundary>
+	);
+};
+
+export const OKSpeakerCard = ({ speaker, updateSpeaker, insertSpeaker, deleteSpeaker }: ISpeakerCardProps) => {
 	const { showSessionsFlag } = useContext(SpeakerControlsContext);
 
 	return (
@@ -42,11 +45,16 @@ export const SpeakerCardNoErrorBoundary = ({
 	);
 };
 
-export const SpeakerCard = (props: ISpeakerCardProps) => {
+export const ErrorSpeakerCard = () => {
 	return (
-		<ErrorBoundary>
-			<SpeakerCardNoErrorBoundary {...props}></SpeakerCardNoErrorBoundary>
-		</ErrorBoundary>
+		<div className="col-xs-12 col-sm-12 col-md-6 col-lg-4 col-sm-12 col-xs-12">
+			<div className="card card-height p-4 mt-4">
+				<img src="/images/speaker-99999.jpg" />
+				<div>
+					<b>Error showing speaker</b>
+				</div>
+			</div>
+		</div>
 	);
 };
 

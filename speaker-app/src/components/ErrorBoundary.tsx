@@ -1,6 +1,7 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 
 interface Props {
+	errorUI?: any;
 	children?: ReactNode;
 }
 
@@ -28,6 +29,9 @@ export class ErrorBoundary extends Component<Props, State> {
 
 	public render() {
 		if (this.state.hasError) {
+			if (this.props.errorUI) {
+				return this.props.errorUI;
+			}
 			return <h4>Something went wrong</h4>;
 		}
 
