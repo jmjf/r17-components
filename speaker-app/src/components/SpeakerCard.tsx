@@ -1,4 +1,4 @@
-import { memo, useContext, useState } from 'react';
+import { memo, PropsWithChildren, useContext, useState } from 'react';
 
 import { ISpeaker } from '../SpeakerData';
 import { SpeakerControlsContext } from 'contexts/SpeakerControlsContext';
@@ -6,15 +6,21 @@ import { Sessions } from 'components/Sessions';
 import { SpeakerContext, SpeakerContextProvider } from 'contexts/SpeakerContext';
 import { DMLFunctionType } from 'hooks/useRequestDelay';
 import { DeleteSpeaker } from './DeleteSpeaker';
+import ErrorBoundary from './ErrorBoundary';
 
-interface ISpeakerCardProps {
+interface ISpeakerCardProps extends PropsWithChildren {
 	speaker: ISpeaker;
 	updateSpeaker: DMLFunctionType<ISpeaker>;
 	insertSpeaker: DMLFunctionType<ISpeaker>;
 	deleteSpeaker: DMLFunctionType<ISpeaker>;
 }
 
-export const SpeakerCard = ({ speaker, updateSpeaker, insertSpeaker, deleteSpeaker }: ISpeakerCardProps) => {
+export const SpeakerCardNoErrorBoundary = ({
+	speaker,
+	updateSpeaker,
+	insertSpeaker,
+	deleteSpeaker,
+}: ISpeakerCardProps) => {
 	const { showSessionsFlag } = useContext(SpeakerControlsContext);
 
 	return (
@@ -33,6 +39,14 @@ export const SpeakerCard = ({ speaker, updateSpeaker, insertSpeaker, deleteSpeak
 				<DeleteSpeaker />
 			</div>
 		</SpeakerContextProvider>
+	);
+};
+
+export const SpeakerCard = (props: ISpeakerCardProps) => {
+	return (
+		<ErrorBoundary>
+			<SpeakerCardNoErrorBoundary {...props}></SpeakerCardNoErrorBoundary>
+		</ErrorBoundary>
 	);
 };
 
@@ -85,7 +99,7 @@ const SpeakerInfo = () => {
 			</div>
 			<FavoriteToggle />
 			<div>
-				<p className="card-description">{bioText}</p>
+				<p className="card-description">{bioText.substring(0, 70)}</p>
 				<div className="social d-flex flex-row mt-4">
 					<div className="company">
 						<h5>Company</h5>

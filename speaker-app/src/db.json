@@ -1,6 +1,25 @@
 {
    "speakers": [
       {
+         "id": "9090",
+         "firstName": "Arun No Bio",
+         "lastName": "Gupta",
+         "companyName": "Amazon",
+         "twitterHandle": "arungupta",
+         "favoriteFlag": true,
+         "sessions": [
+            {
+               "sessionId": "7999",
+               "sessionName": "Using Kubernetes for Machine Learning Frameworks",
+               "eventYear": "2019",
+               "room": {
+                  "roomName": "Town Square A",
+                  "maxPeopleCount": 130
+               }
+            }
+         ]
+      },
+      {
          "id": "1269",
          "firstName": "Arun",
          "lastName": "Gupta",
