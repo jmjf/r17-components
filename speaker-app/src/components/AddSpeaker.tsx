@@ -1,12 +1,19 @@
+import { PropsWithChildren } from 'react';
+
 import { DMLFunctionType } from 'hooks/useRequestDelay';
 import { ISpeaker } from 'SpeakerData';
 
-interface IAddSpeakerProps {
+import { IAuthContextProps } from 'contexts/AuthContext';
+import { withAuth } from './withAuth';
+
+interface IAddSpeakerProps extends PropsWithChildren, IAuthContextProps {
 	eventYear: string;
 	insertSpeaker: DMLFunctionType<ISpeaker>;
 }
 
-export const AddSpeaker = ({ eventYear, insertSpeaker }: IAddSpeakerProps) => {
+function AddSpeaker({ eventYear, insertSpeaker, loggedInUserName }: IAddSpeakerProps) {
+	if (!loggedInUserName || loggedInUserName.length === 0) return null;
+
 	return (
 		<a href="#" className="addSes">
 			<i
@@ -19,7 +26,7 @@ export const AddSpeaker = ({ eventYear, insertSpeaker }: IAddSpeakerProps) => {
 			</i>
 		</a>
 	);
-};
+}
 
 const promptAndAddSpeaker = (eventYear: string, insertSpeaker: DMLFunctionType<ISpeaker>) => {
 	const firstLastName = window.prompt('Enter first and last name:', '') as string;
@@ -44,3 +51,5 @@ const promptAndAddSpeaker = (eventYear: string, insertSpeaker: DMLFunctionType<I
 		}
 	);
 };
+
+export default withAuth(AddSpeaker);
