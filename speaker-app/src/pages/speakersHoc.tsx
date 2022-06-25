@@ -6,7 +6,7 @@ interface ISpeakersProps extends PropsWithChildren {
 	speakers: IHOCSpeaker[];
 }
 
-const Speakers = ({ speakers, ...props }: ISpeakersProps) => {
+const SpeakersHoc = ({ speakers, ...props }: ISpeakersProps) => {
 	return (
 		<div>
 			{speakers.map(({ imageSrc, name }: IHOCSpeaker) => {
@@ -16,4 +16,4 @@ const Speakers = ({ speakers, ...props }: ISpeakersProps) => {
 	);
 };
 
-export default withData(2)(Speakers);
+export default withData(2)(SpeakersHoc);
